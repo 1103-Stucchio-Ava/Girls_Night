@@ -18,7 +18,7 @@ public class Walking : MonoBehaviour
     
     void Update()
     {
-        rb.velocity = moveInput * moveSpeed;
+        rb.linearVelocity = moveInput * moveSpeed;
     }
 
     public void Move(InputAction.CallbackContext context){
