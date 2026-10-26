@@ -6,9 +6,14 @@ using UnityEngine.InputSystem;
 public class Walking : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 5f;
+    [SerializeField] private float sneakSpeed = 2f;
+
     private Rigidbody2D rb;
     private Vector2 moveInput;
     private Animator animator;
+    private bool isSneaking;
+
+    public bool IsSneaking => isSneaking;
     
     void Start()
     {
@@ -20,7 +25,8 @@ public class Walking : MonoBehaviour
     
     void Update()
     {
-        rb.linearVelocity = moveInput * moveSpeed;
+        float currentSpeed = isSneaking ? sneakSpeed : moveSpeed;
+        rb.linearVelocity = moveInput * currentSpeed;
     }
 
     public void Move(InputAction.CallbackContext context){
@@ -35,5 +41,17 @@ public class Walking : MonoBehaviour
         moveInput = context.ReadValue<Vector2>();
         animator.SetFloat("InputX", moveInput.x);
         animator.SetFloat("InputY", moveInput.y);
+    }
+
+    public void Sneak(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            isSneaking = true;
+        }
+        else if (context.canceled)
+        {
+            isSneaking = false;
+        }
     }
 }
